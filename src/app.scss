@@ -2,7 +2,9 @@
 @import "~taro-ui-vue/dist/style/components/loading.scss";
 @import "~taro-ui-vue/dist/style/components/drawer.scss";
 @import "~taro-ui-vue/dist/style/components/list.scss";
+@import "~taro-ui-vue/dist/style/components/icon.scss";
 
 page {
   min-height: 100vh;
+  background-color: #f8f5c3;
 }

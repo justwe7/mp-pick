@@ -7,8 +7,8 @@ export default {
   ],
   window: {
     backgroundTextStyle: 'light',
-    navigationBarBackgroundColor: '#fff',
-    navigationBarTitleText: 'WeChat',
+    navigationBarBackgroundColor: '#f8f5c3',
+    navigationBarTitleText: '',
     navigationBarTextStyle: 'black'
   }/* ,
   tabBar: {

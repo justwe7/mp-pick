@@ -1,5 +1,6 @@
 <template>
   <view class="home-wrapper">
+    {{ randomList }}222
     <image src="../../assets/img/tutu-big.png" mode="widthFix" class="a-rabbit-img-big"></image>
     <image src="../../assets/img/slogan.png" mode="widthFix" class="a-slogan-img-big"></image>
     <image src="../../assets/img/icon-1.png" mode="widthFix" class="a-icon-1"></image>
@@ -31,7 +32,8 @@
     </view>
     <view class="g-control">
       <!-- <AtButton type="primary" size="small" @click="handleClick"> {{ onOff ? '结束' : '开始' }}</AtButton> -->
-      <xButton type="pulse" class="f-mr-80" @tap="isShowDrawer = !isShowDrawer">配置</xButton>
+      <xButton type="pulse" class="f-mr-80" @tap="$location.to('/pages/user/user')">配置</xButton>
+      <!-- <xButton type="pulse" class="f-mr-80" @tap="isShowDrawer = !isShowDrawer">配置</xButton> -->
       <xButton type="raise" @tap="handleClick">{{ onOff ? '结束' : '开始' }}</xButton>
       <!-- <xButton type="fill">开始</xButton>
       <xButton type="pulse">开始</xButton>
@@ -45,6 +47,9 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 import xButton from '../../components/XButton.vue'
 // import NumberDisplay from '../../components/NumberDisplay.vue'
 // import NumberSubmit from '../../components/NumberSubmit.vue'
@@ -53,30 +58,25 @@ import settingPage from './components/settingDrawer.vue';
 let timer
 export default {
   name: 'Home',
+  setup () {
+    const store = useStore()
+    const randomList = computed(() => store.getters.randomList)
+    return {
+      randomList
+    }
+  },
   data () {
     return {
       onOff: false,
       isShowDrawer: false,
       cur: 0,
-      list: [
-        '北京烤鸭',
-        '特色小龙虾',
-        '串串香',
-        '肉夹馍',
-        '牛羊肉泡馍',
-        '麻辣凉皮',
-        '汉中热米皮',
-        '肉丸糊辣汤',
-        '水盆羊肉',
-        '凉皮',
-        '乾县锅盔',
-        '辣子锅盔',
-        '葫芦头泡馍',
-        '金线油塔'
-      ]
+      list: []
     }
   },
-  mounted () {
+  onShow () {
+    this.list = this.randomList.slice(0)
+    // console.log(this.$location.to('/pages/user/user'))
+    // Taro.navigateTo('pages/user/user')
   },
   methods: {
     handleClick () {

@@ -13,4 +13,42 @@ const App = createApp({
 
 App.use(store)
 
+
+function isObj (data) {
+  return Object.prototype.toString.call(data) === '[object Object]'
+}
+
+const promisify = (fnName, options = {}) => {
+  return new Promise((resolve, reject) => {
+    options.success = resolve
+    options.fail = err => {
+      reject(err)
+    }
+    wx[fnName](options)
+  })
+}
+
+App.config.globalProperties.$promisify = promisify
+
+App.config.globalProperties.$location = {
+  to (data) { // 页面跳转
+    if (isObj(data)) {
+      return wx.navigateTo(data)
+    }
+    return promisify('navigateTo', { url: data })
+  },
+  replace (data) { // 重定向
+    if (isObj(data)) {
+      return wx.redirectTo(data)
+    }
+    return promisify('redirectTo', { url: data })
+  },
+  back (data = 1) { // 页面回退
+    if (isObj(data)) {
+      return wx.navigateBack({ delta: data })
+    }
+    return wx.navigateBack(data)
+  }
+}
+
 export default App

@@ -1,3 +1,5 @@
 export default {
-  navigationBarTitleText: '我的'
+  navigationBarTitleText: '配置',
+  navigationBarTextStyle: "black",
+  navigationBarBackgroundColor: "#fdfaf6",
 }
