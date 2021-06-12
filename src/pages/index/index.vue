@@ -1,6 +1,5 @@
 <template>
   <view class="home-wrapper">
-    {{ randomList }}222
     <image src="../../assets/img/tutu-big.png" mode="widthFix" class="a-rabbit-img-big"></image>
     <image src="../../assets/img/slogan.png" mode="widthFix" class="a-slogan-img-big"></image>
     <image src="../../assets/img/icon-1.png" mode="widthFix" class="a-icon-1"></image>
@@ -16,9 +15,9 @@
         <image src="../../assets/img/tutu.png" mode="widthFix" class="rabbit-img-s" :class="{'z-ani-filp': onOff}"></image>
       </view>
       <view class="content">
-        <view class="glitch">
+        <view class="glitch" :style="`color: ${fontColorArr[fontColorIdx%fontColorArr.length]}`">
           {{ list[cur] }}
-          <view class="retouch" v-show="onOff">{{ list[cur] }}</view>
+          <!-- <view class="retouch" v-show="onOff">{{ list[cur] }}</view> -->
         </view>
       </view>
       <view class="round">
@@ -55,6 +54,8 @@ import xButton from '../../components/XButton.vue'
 // import NumberSubmit from '../../components/NumberSubmit.vue'
 import settingPage from './components/settingDrawer.vue';
 
+const colorArr = ['#0a1931', '#fff', '#f7fd04', '#21094e', '#f55c47', '#344fa1', '#cf0000', '#5b6d5b', '#f58634', '#3c415c', '#fff600', '#26001b', '#ff005c']
+
 let timer
 export default {
   name: 'Home',
@@ -70,6 +71,8 @@ export default {
       onOff: false,
       isShowDrawer: false,
       cur: 0,
+      fontColorIdx: 0,
+      fontColorArr: ['#fff'],
       list: []
     }
   },
@@ -78,25 +81,33 @@ export default {
     // console.log(this.$location.to('/pages/user/user'))
     // Taro.navigateTo('pages/user/user')
   },
+  onLoad () {
+    this.initFontColor()
+  },
   methods: {
+    initFontColor () {
+      this.fontColorIdx = 0
+      this.fontColorArr = colorArr.sort(() => Math.random() - 0.5)
+    },
     handleClick () {
-      console.log(222)
       if (this.onOff) {
-        this.bar()
+        this.runStop()
         } else {
-        this.foo()
+        this.initFontColor()
+        this.runStart()
       }
       this.onOff = !this.onOff
     },
-    foo () {
+    runStart () {
       const maxLen = this.list.length - 1
       this.cur++
       timer = setInterval(() => {
         this.cur++
+        this.fontColorIdx++
         this.cur > maxLen && (this.cur = 0)
       }, 150);
     },
-    bar () {
+    runStop () {
       clearInterval(timer)
     },
     onDrawerClose () {
@@ -277,7 +288,8 @@ page {
 }
 
 .glitch{
-  color:white;
+  color:#fff;
+  // color:white;
   font-size: 48rpx;
   position: relative;
 }
