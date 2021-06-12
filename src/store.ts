@@ -1,8 +1,10 @@
 import { createStore } from 'vuex'
+const LOC_KEY = 'local_storage'
+
 
 const state = {
   numbers: [1, 2, 3],
-  randomList: [
+  randomList: wx.getStorageSync(LOC_KEY) || [
     '北京烤鸭',
     '特色小龙虾',
     '串串香',
@@ -25,6 +27,7 @@ const mutations = {
     state.numbers.push(payload)
   },
   UPDATE_LIST(state, payload) {
+    wx.setStorageSync(LOC_KEY, payload)
     state.randomList = payload
   }
 }

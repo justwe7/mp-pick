@@ -68,7 +68,7 @@
       <!-- <view class="f-hr"></view> -->
       <!-- <view class="g-title">已选项：</view> -->
       <view class="g-result-box">
-        <view class="m-item" v-for="(item, index) in list">
+        <view class="m-item" v-for="(item, index) in optionList" @tap="handleDelIdx(index)">
           {{item}} <view class='at-icon at-icon-close'></view>
         </view>
       </view>
@@ -99,20 +99,20 @@ export default {
   name: 'User',
   setup () {
     const store = useStore()
-    const list = ref(store.getters.randomList)
+    const optionList = ref(store.getters.randomList)
 
-    function _updateList(val) {
-      list.value = val
+    function updateList(val) {
+      optionList.value = val
     }
 
-    function _updateStore(val) {
+    function updateStore(val) {
       store.dispatch('updateList', val)
     }
 
     return {
-      list,
-      _updateList,
-      _updateStore
+      optionList,
+      updateList,
+      updateStore
     }
   },
   components: {
@@ -129,7 +129,7 @@ export default {
       isEdit: false,
       current: 0,
       listByStr: '',
-      menusList: [
+      menusList: [ // 选项列表
         '串串香',
         '肉夹馍',
         '牛羊肉泡馍',
@@ -146,22 +146,25 @@ export default {
     }
   },
   methods: {
+    handleDelIdx (e) {
+      this.optionList.splice(e, 1)
+    },
     handleChangeType (idx) {
-      console.log(idx)
       this.current = idx
     },
     handleEdit () {
-      this.listByStr = this.menusList.join(' ')
+      this.listByStr = this.optionList.join(' ')
       this.isEdit = true
     },
     handleEditSubmit (e) {
-      this.menusList = this.listByStr.trim().split(' ').filter(v => v)
+      this.optionList = this.listByStr.trim().replaceAll('\n', ' ').split(' ').filter(v => v)
       // console.log(this.listByStr)
-      this._updateList(this.menusList)
+      this.updateList(this.optionList)
       this.isEdit = false
     },
     handleSave () {
-      this._updateStore(this.list)
+      this.updateStore(this.optionList)
+      this.$location.back()
     }
   },
 }
