@@ -207,7 +207,7 @@ export default {
       this.isEdit = true
     },
     handleEditSubmit (e) {
-      this.optionList = this.listByStr.trim().replaceAll('\n', ' ').split(' ').filter(v => v)
+      this.optionList = this.listByStr.trim().split('\n').join(' ').split(' ').filter(v => v)
       // console.log(this.listByStr)
       this.updateList(this.optionList)
       this.isEdit = false

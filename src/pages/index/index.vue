@@ -106,7 +106,7 @@ export default {
       }
     },
     runStart () {
-      this.cur++
+      this.list = this.randomList.slice(0).sort(() => Math.random() - 0.5)
       timer = setInterval(() => {
         this.cur++
         this.fontColorIdx++
