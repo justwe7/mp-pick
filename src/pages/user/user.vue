@@ -16,34 +16,38 @@
         :tabList="[
           { title: '查看全部' },
           { title: '简餐便当' },
-          { title: '粥食面点' },
           { title: '饮茶先啦' },
-          { title: '汉堡披萨' },
-          { title: '米粉烫捞' }
+          { title: '汉堡披萨' }
         ]"
         :onClick="handleChangeType">
         <AtTabsPane tabDirection='vertical' :current="current" :index="0">
           <view class="m-options-box" style='font-size:22rpx;height: 300rpx;'>
-            <view class="option-item" v-for="(item, index) in menusList">
+            <view class="option-item" v-for="(item, index) in [...menusList[0], ...menusList[1], ...menusList[2]]" @tap="handleAddItem(item)">
               {{item}}
             </view>
           </view>
           <!-- <view style='font-size:18px;text-align:center;height:200px;'>标签页一的内容</view> -->
         </AtTabsPane>
         <AtTabsPane tabDirection='vertical' :current="current" :index="1">
-          <view style='font-size:18px;text-align:center;height:200px;'>标签页二的内容</view>
+          <view class="m-options-box" style='font-size:22rpx;height: 300rpx;'>
+            <view class="option-item" v-for="(item, index) in menusList[0]" @tap="handleAddItem(item)">
+              {{item}}
+            </view>
+          </view>
         </AtTabsPane>
         <AtTabsPane tabDirection='vertical' :current="current" :index="2">
-          <view style='font-size:18px;text-align:center;height:200px;'>标签页三的内容</view>
+          <view class="m-options-box" style='font-size:22rpx;height: 300rpx;'>
+            <view class="option-item" v-for="(item, index) in menusList[1]" @tap="handleAddItem(item)">
+              {{item}}
+            </view>
+          </view>
         </AtTabsPane>
-        <AtTabsPane tabDirection='vertical' :current="current" :index="3">
-          <view style='font-size:18px;text-align:center;height:200px;'>标签页四的内容</view>
-        </AtTabsPane>
-        <AtTabsPane tabDirection='vertical' :current="current" :index="4">
-          <view style='font-size:18px;text-align:center;height:200px;'>标签页五的内容</view>
-        </AtTabsPane>
-        <AtTabsPane tabDirection='vertical' :current="current" :index="5">
-          <view style='font-size:18px;text-align:center;height:200px;'>标签页六的内容</view>
+        <AtTabsPane tabDirection='vertical' :current="current" :index="2">
+          <view class="m-options-box" style='font-size:22rpx;height: 300rpx;'>
+            <view class="option-item" v-for="(item, index) in menusList[2]" @tap="handleAddItem(item)">
+              {{item}}
+            </view>
+          </view>
         </AtTabsPane>
       </AtTabs>
       <!-- <view class="f-hr"></view>
@@ -86,14 +90,15 @@
       <AtTextarea :onConfirm="handleEditSubmit" showConfirmBar :value="listByStr" :onChange="(e) => { listByStr = e }" :maxLength="9999" :count="false" placeholder="填写选项以空格分割"></AtTextarea>
       <AtButton type="primary" size="small" @tap="handleEditSubmit" class="f-mt-30">确定</AtButton>
     </AtFloatLayout>
+
+    <AtToast :isOpened="isToast" :text="errMsg" hasMask :onClose="() => { isToast = false }"></AtToast>
   </view>
 </template>
 
 <script>
 import { ref } from 'vue'
 import { useStore } from 'vuex'
-import { AtButton, AtCard, AtIcon, AtTabs, AtTabsPane, AtFloatLayout, AtTextarea } from 'taro-ui-vue'
-
+import { AtButton, AtCard, AtIcon, AtTabs, AtTabsPane, AtFloatLayout, AtTextarea, AtToast } from 'taro-ui-vue'
 
 export default {
   name: 'User',
@@ -122,35 +127,80 @@ export default {
     AtTabs,
     AtTabsPane,
     AtFloatLayout,
-    AtTextarea
+    AtTextarea,
+    AtToast
   },
   data () {
     return {
+      isToast: false,
+      errMsg: '失败',
       isEdit: false,
       current: 0,
       listByStr: '',
       menusList: [ // 选项列表
-        '串串香',
-        '肉夹馍',
-        '牛羊肉泡馍',
-        '麻辣凉皮',
-        '汉中热米皮',
-        '肉丸糊辣汤',
-        '水盆羊肉',
-        '凉皮',
-        '乾县锅盔',
-        '辣子锅盔',
-        '葫芦头泡馍',
-        '金线油塔'
+        [
+          '凉皮肉夹馍',
+          '米线',
+          '重庆小面',
+          '盖饭',
+          '蛋炒饭',
+          '刀削面',
+          '羊杂汤',
+          '卤煮',
+          '羊肉泡馍',
+          '砂锅',
+          '养生粥',
+          '兰州拉面',
+          '油泼面'
+        ],
+        [
+          '蜜雪冰城',
+          '喜茶',
+          'COCO',
+          '奈雪',
+          '一点点',
+          '贡茶',
+          '立顿',
+          '香飘飘',
+          '优乐美',
+          '快乐水',
+          '星巴克',
+          '瑞星',
+          'Costa'
+        ],
+        [
+          '麦当劳',
+          '肯德基',
+          '赛百味',
+          '汉堡王',
+          '好伦哥',
+          '华莱士',
+          '必胜客',
+          '达美乐',
+          '德克士'
+        ],
       ]
     }
   },
   methods: {
+    toast (text) {
+      this.isToast = true
+      this.errMsg = text
+    },
     handleDelIdx (e) {
       this.optionList.splice(e, 1)
     },
     handleChangeType (idx) {
       this.current = idx
+    },
+    handleAddItem (item) {
+      console.log(item)
+      if (this.optionList.includes(item)) {
+        this.toast('已存在“' + item + '”')
+        return false
+      }
+      console.log(this.optionList.includes(item))
+      this.optionList.push(item)
     },
     handleEdit () {
       this.listByStr = this.optionList.join(' ')
@@ -167,6 +217,19 @@ export default {
       this.$location.back()
     }
   },
+  onShareAppMessage: function (res) {
+    return {
+      title: '你在纠结什么？一起来搞颜色吧！',
+      path: 'pages/index/index',
+      imageUrl: 'https://image.littl.cn/images/2021/06/12/-1.png'
+    }
+  },
+  onShareTimeline: function (res) {
+    return {
+      title: '你在纠结什么？一起来搞颜色吧！',
+      imageUrl: 'https://image.littl.cn/images/2021/06/12/09a5bc8fe849d5f4815a5d8e011d06f0.th.png'
+    }
+  }
 }
 </script>
 
@@ -175,6 +238,9 @@ export default {
 @import "~taro-ui-vue/dist/style/components/tabs.scss";
 @import "~taro-ui-vue/dist/style/components/float-layout.scss";
 @import "~taro-ui-vue/dist/style/components/textarea.scss";
+@import "~taro-ui-vue/dist/style/components/toast.scss";
+@import "~taro-ui-vue/dist/style/components/icon.scss";
+
 page {
   background-color: #fdfaf6;
 }

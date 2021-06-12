@@ -73,16 +73,24 @@ export default {
       cur: 0,
       fontColorIdx: 0,
       fontColorArr: ['#fff'],
-      list: []
+      list: [],
+      maxIndex: 0
     }
   },
+  // computed: {
+  //   list () {
+  //     return this.randomList.slice(0).sort(() => Math.random() - 0.5) || []
+  //   }
+  // },
   onShow () {
     this.list = this.randomList.slice(0)
-    // console.log(this.$location.to('/pages/user/user'))
-    // Taro.navigateTo('pages/user/user')
+    this.maxIndex = this.list.length - 1
   },
   onLoad () {
     this.initFontColor()
+  },
+  onUnload () {
+    this.runStop()
   },
   methods: {
     initFontColor () {
@@ -96,18 +104,18 @@ export default {
         this.initFontColor()
         this.runStart()
       }
-      this.onOff = !this.onOff
     },
     runStart () {
-      const maxLen = this.list.length - 1
       this.cur++
       timer = setInterval(() => {
         this.cur++
         this.fontColorIdx++
-        this.cur > maxLen && (this.cur = 0)
+        this.cur > this.maxIndex && (this.cur = 0)
       }, 150);
+      this.onOff = true
     },
     runStop () {
+      this.onOff = false
       clearInterval(timer)
     },
     onDrawerClose () {
