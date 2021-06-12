@@ -308,5 +308,9 @@ page {
   .at-textarea__textarea {
     height: 300rpx;
   }
+  .at-float-layout__container {
+    top: 0;
+    bottom: auto;
+  }
 }
 </style>
