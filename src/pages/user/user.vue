@@ -91,7 +91,7 @@
       <AtButton type="primary" size="small" @tap="handleEditSubmit" class="f-mt-30">确定</AtButton>
     </AtFloatLayout>
 
-    <AtToast :isOpened="isToast" :text="errMsg" hasMask :onClose="() => { isToast = false }"></AtToast>
+    <AtToast :isOpened="isToast" :text="errMsg" :onClose="() => { isToast = false }"></AtToast>
   </view>
 </template>
 
