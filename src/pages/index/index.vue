@@ -66,7 +66,14 @@
       :onClose="() => {isAd = false}"
     >
       <view class="a-ad-box">
-        美团下单
+        <navigator class="ad-block" target="miniProgram" open-type="navigate" app-id="wxde8ac0a21135c07d" path="/index/pages/h5/h5?lch=cps:waimai:5:a144a9fa40a42c55af00214bb4bb3993971:14962dingdanxiawaimai:2:70690&f_userId=1&weburl=https%3A%2F%2Fclick.meituan.com%2Ft%3Ft%3D1%26c%3D1%26p%3DOWMpZ-uzIFOVe6JyOONs3dXuqV0qcAf-r-KCvHdXiNfM3oMXlDSgQ1lHQ7sc1bHIMXeq2XWRYP9S3VMvpbQU5suS6wIbvlY8ysKwoMucfvMNkUpDUoZB8UzfJotTLsOtFBVyJPNh84wtIvYJA4YbhskXnQTJHG_vq68uUpWVeXKz1wSjvdQ_u1PJRo5gTASsPjTgdf7BehTj5zPJxndIrav5AnCfNXFwR8xQAaSRU4qhjOcpjdWshmD6IbIfodDtwdi__LfwtUHfPb01QIsqlPSy3VHdhAIZfNEnZStQykvHk-LSdCklNojCZOUbaJwIj9iEPKTi9vRRmaU9gMfeNBmeDP3OfoyXK8-86Y2KqXTKKhrw9HL6lMHqh72xLQoSza5XNhEfc7TfOqswNBK9eA5NRxkYYvFkcrCx1tTHg23zjLO2bIuvv6KfF-1lE3v5AKFAhUB39c2XD46C9em7dM2vW8Knu6-t5MjRD-YxVNp9T01SfjR3VXzNYEBoRkEpG_5pGdZ3wn6E8MJGrfqCXLBWomAqxbiYZ3GLypPSJ_Gk0hLuc8THawjmzP3UqIAtMef6FZYVHv8lqwJ_-h8E8ePYhGq7pN73daDKoKHAz1_QeAZEQ5EG4BqcILt2bqP6KSUv-J212ANX8wE_xtc3tWR8X32YnYsBeDDiQnYCtdrY5khSMPjDtSGfaftjikxO-Gj5xRXlzKWYKqneEv31njAQ5UeE5EqWGRu9MeXfEpjWn98uQEY-eoDqmb63GVWg&f_token=1">
+          <image src="https://image.littl.cn/images/2021/06/12/09a5bc8fe849d5f4815a5d8e011d06f0.th.png" mode="widthFix" class="u-ad-img-logo"></image>
+          <button class="u-ad-btn" size="mini">美团下单</button>
+        </navigator>
+        <navigator class="ad-block" target="miniProgram" open-type="navigate" app-id="wxece3a9a4c82f58c9" path="ele-recommend-price/pages/guest/index?inviterId=19abb5a2&chInfo=ch_wechat_chsub_CopyLink&_ltracker_f=">
+          <image src="https://image.littl.cn/images/2021/06/12/09a5bc8fe849d5f4815a5d8e011d06f0.th.png" mode="widthFix" class="u-ad-img-logo"></image>
+          <button class="u-ad-btn" size="mini">饿了么下单</button>
+        </navigator>
       </view>
     </AtCurtain>
     <!-- <AtButton
@@ -86,7 +93,6 @@ import xButton from '../../components/XButton.vue'
 // import NumberDisplay from '../../components/NumberDisplay.vue'
 // import NumberSubmit from '../../components/NumberSubmit.vue'
 import settingPage from './components/settingDrawer.vue';
-
 
 const colorArr = ['#0a1931', '#fff', '#f7fd04', '#21094e', '#f55c47', '#344fa1', '#cf0000', '#5b6d5b', '#f58634', '#3c415c', '#fff600', '#26001b', '#ff005c']
 
@@ -132,7 +138,6 @@ export default {
   },
   onLoad () {
     this.initFontColor()
-    console.log(QQMapWX)
 
     this.qqmapsdk = new QQMapWX({
         key: '5RZBZ-BVBK5-U43I5-Q5RMN-HFOYH-LLFZR'
@@ -249,7 +254,24 @@ page {
   background: #f8f5c3 url('../../assets/img/bg.png') no-repeat center bottom / cover;
 }
 .a-ad-box {
-  background-color: #fff;
+  display: flex;
+  justify-content: space-around;
+  padding: 30rpx 20rpx;
+  background-color: #f9f3f3;
+  border-radius: 11rpx;
+  .ad-block {
+    flex-basis: 40%;
+    .u-ad-img-logo {
+      @extend %centerblock;
+      margin-bottom: 10rpx;
+      width: 50rpx;
+      height: 50rpx;
+    }
+    .u-ad-btn {
+      min-width: 3rpx;
+      background-color: #fed049;
+    }
+  }
 }
 .home-wrapper {
   text-align: center;

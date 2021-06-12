@@ -5,7 +5,7 @@
   "description": "干饭小程序",
   "appid": "wx6e49b0db2f5ca7be",
   "setting": {
-    "urlCheck": false,
+    "urlCheck": true,
     "es6": true,
     "enhance": false,
     "postcss": true,
