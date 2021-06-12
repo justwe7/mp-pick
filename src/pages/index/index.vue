@@ -31,8 +31,16 @@
     </view>
     <view class="g-control">
       <!-- <AtButton type="primary" size="small" @click="handleClick"> {{ onOff ? '结束' : '开始' }}</AtButton> -->
-      <xButton :type="onOff ? 'pulse' : 'close'" @tap="handleClick">{{ onOff ? '结束' : '开始' }}</xButton>
+      <xButton type="pulse" class="f-mr-80" @tap="isShowDrawer = !isShowDrawer">配置</xButton>
+      <xButton type="raise" @tap="handleClick">{{ onOff ? '结束' : '开始' }}</xButton>
+      <!-- <xButton type="fill">开始</xButton>
+      <xButton type="pulse">开始</xButton>
+      <xButton type="close">开始</xButton>
+      <xButton type="raise">开2始</xButton>
+      <xButton type="up">开始</xButton>
+      <xButton type="offset">开始</xButton> -->
     </view>
+    <settingPage v-model="isShowDrawer" :data="list"></settingPage>
   </view>
 </template>
 
@@ -40,14 +48,15 @@
 import xButton from '../../components/XButton.vue'
 // import NumberDisplay from '../../components/NumberDisplay.vue'
 // import NumberSubmit from '../../components/NumberSubmit.vue'
-import { AtButton } from 'taro-ui-vue'
-import moduleName from './index.config';
+import settingPage from './components/settingDrawer.vue';
+
 let timer
 export default {
   name: 'Home',
   data () {
     return {
       onOff: false,
+      isShowDrawer: false,
       cur: 0,
       list: [
         '北京烤鸭',
@@ -68,7 +77,6 @@ export default {
     }
   },
   mounted () {
-    console.log(moduleName)
   },
   methods: {
     handleClick () {
@@ -90,13 +98,18 @@ export default {
     },
     bar () {
       clearInterval(timer)
+    },
+    onDrawerClose () {
+
     }
   },
   components: {
     // NumberDisplay,
     // NumberSubmit,
-    AtButton,
-    xButton
+    // AtButton,
+    // AtDrawer,
+    xButton,
+    settingPage
   }
 }
 </script>
@@ -193,13 +206,13 @@ page {
       // }
     }
     .g-control {
+      padding: 80rpx 30rpx 10rpx;
       position: relative;
       @extend %centerblock;
-      display: flex;
+      // display: flex;
+      text-align: center;
       width: 90vw;
-      height: 400rpx;
       height: 300rpx;
-      align-items: center;
     }
     .a-game-box {
       opacity: 0.8;

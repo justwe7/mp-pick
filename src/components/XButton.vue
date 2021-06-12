@@ -1,5 +1,5 @@
 <template>
-  <button :class="`x-button ${type}`"><slot></slot></button>
+  <button :class="`x-button ${type} ${size}`"><slot></slot></button>
   <!-- <button :class="`x-button ${type}`" :hover-2class="`${type}-hover`"><slot></slot></button> -->
 </template>
 
@@ -13,7 +13,7 @@ export default {
       default: 'fill'
     },
     size: {
-      default: 'normal'
+      default: 'default'
     }
   }
 }
@@ -83,9 +83,9 @@ export default {
   // Make a map with the class names and matching colors
 $colors: (
   fill: #a972cb,
-  pulse: #ef6eae,
+  pulse: #fad586,
   close: #ff7f82,
-  raise: #ffa260,
+  raise: #29bb89,
   up: #e4cb58,
   slide: #8fc866,
   offset: #19bc8b
@@ -122,7 +122,14 @@ $colors: (
   font: inherit;
   line-height: 1;
   // margin: 0.5em;
-  padding: 0.6em 2em;
+  &.large {
+    display: block;
+    padding: 1em 2em;
+  }
+  &.default {
+    display: inline-block;
+    padding: 0.6em 2em;
+  }
 }
 
 </style>

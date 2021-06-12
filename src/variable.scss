@@ -325,7 +325,7 @@ $pdArr: 5 10 20 36;
 }
 
 /* margin */
-$mgArr: 5 10 20 24 30 40;
+$mgArr: 5 10 20 24 30 40 80;
 
 @each $val in $mgArr {
   .f-mg-#{$val} {
