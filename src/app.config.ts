@@ -10,7 +10,7 @@ export default {
     navigationBarBackgroundColor: '#fff',
     navigationBarTitleText: 'WeChat',
     navigationBarTextStyle: 'black'
-  },
+  }/* ,
   tabBar: {
     list: [{
       // 'iconPath': homeIcon,
@@ -28,5 +28,5 @@ export default {
     'selectedColor': '#fb9300',
     'backgroundColor': '#fff',
     'borderStyle': 'white'
-  }
+  } */
 }
