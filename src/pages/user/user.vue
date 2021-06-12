@@ -87,7 +87,7 @@
       :isOpened="isEdit"
       title="手动编辑(以空格分割选项)"
       :onClose="() => { isEdit = false }">
-      <AtTextarea :onConfirm="handleEditSubmit" showConfirmBar :value="listByStr" :onChange="(e) => { listByStr = e }" :maxLength="9999" :count="false" placeholder="填写选项以空格分割"></AtTextarea>
+      <AtTextarea :autoFocus="autoFocus" :onConfirm="handleEditSubmit" showConfirmBar :value="listByStr" :onChange="(e) => { listByStr = e }" :maxLength="9999" :count="false" placeholder="填写选项以空格分割"></AtTextarea>
       <AtButton type="primary" size="small" @tap="handleEditSubmit" class="f-mt-30">确定</AtButton>
     </AtFloatLayout>
 
@@ -132,6 +132,7 @@ export default {
   },
   data () {
     return {
+      autoFocus: false,
       isToast: false,
       errMsg: '失败',
       isEdit: false,
@@ -180,6 +181,13 @@ export default {
           '德克士'
         ],
       ]
+    }
+  },
+  watch: {
+    'isEdit' (newVal) {
+      setTimeout(() => {
+        this.autoFocus = newVal
+      }, 300)
     }
   },
   methods: {

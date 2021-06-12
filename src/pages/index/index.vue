@@ -1,5 +1,6 @@
 <template>
   <view class="home-wrapper">
+    <!-- <AtSwitch title='已关闭' :border="false" /> -->
     <image src="../../assets/img/tutu-big.png" mode="widthFix" class="a-rabbit-img-big"></image>
     <image src="../../assets/img/slogan.png" mode="widthFix" class="a-slogan-img-big"></image>
     <image src="../../assets/img/icon-1.png" mode="widthFix" class="a-icon-1"></image>
@@ -29,9 +30,13 @@
         <view class="dot"></view>
       </view>
     </view>
-    <view class="g-control">
+    <!-- <xButton type="pulse" class="f-mr-30" @tap="isAd = true">现在下单</xButton> -->
+
+    <view class="g-control" v-if="hasResult">
       <!-- <AtButton type="primary" size="small" @click="handleClick"> {{ onOff ? '结束' : '开始' }}</AtButton> -->
-      <xButton type="pulse" class="f-mr-80" @tap="$location.to('/pages/user/user')">配置</xButton>
+      <!-- <xButton type="pulse" class="f-mr-80" @tap="$location.to('/pages/user/user')">配置</xButton> -->
+      <xButton type="pulse" class="f-mr-30" @tap="$location.to('/pages/user/user')">配置</xButton>
+      <xButton type="close" class="f-mr-30" @tap="handleArea">{{isShowDrawer ? '美食模式' : '餐厅模式'}}</xButton>
       <!-- <xButton type="pulse" class="f-mr-80" @tap="isShowDrawer = !isShowDrawer">配置</xButton> -->
       <xButton type="raise" @tap="handleClick">{{ onOff ? '结束' : '开始' }}</xButton>
       <!-- <xButton type="fill">开始</xButton>
@@ -41,7 +46,34 @@
       <xButton type="up">开始</xButton>
       <xButton type="offset">开始</xButton> -->
     </view>
-    <settingPage v-model="isShowDrawer" :data="list"></settingPage>
+    <view class="g-control" v-else>
+      <!-- <AtButton type="primary" size="small" @click="handleClick"> {{ onOff ? '结束' : '开始' }}</AtButton> -->
+      <!-- <xButton type="pulse" class="f-mr-80" @tap="$location.to('/pages/user/user')">配置</xButton> -->
+      <xButton type="pulse" class="f-mr-30" @tap="isAd = true">现在下单</xButton>
+      <!-- <xButton type="pulse" class="f-mr-80" @tap="isShowDrawer = !isShowDrawer">配置</xButton> -->
+      <xButton type="raise" @tap="hasResult = !hasResult">重新选择</xButton>
+      <!-- <xButton type="fill">开始</xButton>
+      <xButton type="pulse">开始</xButton>
+      <xButton type="close">开始</xButton>
+      <xButton type="raise">开2始</xButton>
+      <xButton type="up">开始</xButton>
+      <xButton type="offset">开始</xButton> -->
+    </view>
+
+    <AtCurtain
+      :isOpened="isAd"
+      closeBtnPosition="top-right"
+      :onClose="() => {isAd = false}"
+    >
+      <view class="a-ad-box">
+        美团下单
+      </view>
+    </AtCurtain>
+    <!-- <AtButton
+      :onClick="() => {isAd = false}">
+      右上关闭幕帘
+    </AtButton> -->
+    <!-- <settingPage v-model="isShowDrawer" :data="restaurantList"></settingPage> -->
   </view>
 </template>
 
@@ -49,12 +81,19 @@
 import { ref } from 'vue'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
+import { AtSwitch, AtCurtain } from 'taro-ui-vue'
 import xButton from '../../components/XButton.vue'
 // import NumberDisplay from '../../components/NumberDisplay.vue'
 // import NumberSubmit from '../../components/NumberSubmit.vue'
 import settingPage from './components/settingDrawer.vue';
 
+
 const colorArr = ['#0a1931', '#fff', '#f7fd04', '#21094e', '#f55c47', '#344fa1', '#cf0000', '#5b6d5b', '#f58634', '#3c415c', '#fff600', '#26001b', '#ff005c']
+
+const db = wx.cloud.database()
+const _ = db.command
+
+const QQMapWX = require('../../lib/qqmap-wx-jssdk.min.js');
 
 let timer
 export default {
@@ -68,31 +107,84 @@ export default {
   },
   data () {
     return {
+      isAd: false,
+      hasResult: true,
       onOff: false,
       isShowDrawer: false,
       cur: 0,
       fontColorIdx: 0,
       fontColorArr: ['#fff'],
       list: [],
-      maxIndex: 0
+      restaurantList: [], // 餐馆列表
+      // maxIndex: 0,
+      qqmapsdk: null,
+      lac: ''
     }
   },
-  // computed: {
-  //   list () {
-  //     return this.randomList.slice(0).sort(() => Math.random() - 0.5) || []
-  //   }
-  // },
+  computed: {
+    maxIndex () {
+      return this.list.length - 1 || 0
+    }
+  },
   onShow () {
     this.list = this.randomList.slice(0)
-    this.maxIndex = this.list.length - 1
+    // this.maxIndex = this.list.length - 1
   },
   onLoad () {
     this.initFontColor()
+    console.log(QQMapWX)
+
+    this.qqmapsdk = new QQMapWX({
+        key: '5RZBZ-BVBK5-U43I5-Q5RMN-HFOYH-LLFZR'
+    });
+
+    wx.getLocation().then(res => {
+        console.log(res)
+        if (res.errMsg !== 'getLocation:ok') {
+          return false
+        }
+        this.lac = `${res.latitude},${res.longitude}`
+    })
+
+    // wx.cloud.callFunction({
+    //   name: 'demo',
+    //   complete: res => {
+    //     console.log('callFunction test result: ', res.result)
+    //   }
+    // })
   },
   onUnload () {
     this.runStop()
   },
   methods: {
+    handleArea () {
+      this.isShowDrawer = !this.isShowDrawer
+      if (!this.isShowDrawer) {
+        this.list = this.randomList.slice(0)
+        return false
+      }
+      wx.showLoading()
+
+      this.qqmapsdk.search({
+        keyword: '美食',
+        page_size: 20,
+        location: this.lac,
+        // location: `${res.latitude},${res.longitude}`,
+        region_fix: 1,
+        page_index: [1,2,3][+new Date%3],
+        success: (res) => {
+          console.log(res);
+          this.restaurantList = res.data.map(item => item.title)
+          this.list = this.restaurantList
+          wx.hideLoading()
+
+        },
+        fail: (res) => {
+          console.log(res);
+          wx.hideLoading()
+        }
+      });
+    },
     initFontColor () {
       this.fontColorIdx = 0
       this.fontColorArr = colorArr.sort(() => Math.random() - 0.5)
@@ -106,7 +198,7 @@ export default {
       }
     },
     runStart () {
-      this.list = this.randomList.slice(0).sort(() => Math.random() - 0.5)
+      this.list = this[this.isShowDrawer ? 'restaurantList' : 'randomList'].slice(0).sort(() => Math.random() - 0.5)
       timer = setInterval(() => {
         this.cur++
         this.fontColorIdx++
@@ -116,6 +208,7 @@ export default {
     },
     runStop () {
       this.onOff = false
+      this.hasResult = false
       clearInterval(timer)
     },
     onDrawerClose () {
@@ -128,7 +221,9 @@ export default {
     // AtButton,
     // AtDrawer,
     xButton,
-    settingPage
+    settingPage,
+    AtSwitch,
+    AtCurtain
   },
   onShareAppMessage: function (res) {
     return {
@@ -147,9 +242,14 @@ export default {
 </script>
 
 <style lang="scss">
+@import "~taro-ui-vue/dist/style/components/switch.scss";
+@import "~taro-ui-vue/dist/style/components/curtain.scss";
 page {
   background-color: #f8f5c3;
   background: #f8f5c3 url('../../assets/img/bg.png') no-repeat center bottom / cover;
+}
+.a-ad-box {
+  background-color: #fff;
 }
 .home-wrapper {
   text-align: center;

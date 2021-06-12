@@ -28,5 +28,10 @@ export default {
     'selectedColor': '#fb9300',
     'backgroundColor': '#fff',
     'borderStyle': 'white'
-  } */
+  } */,
+  permission: {
+    'scope.userLocation': {
+      'desc': '你的位置信息将用于小程序服务搜索附近的美食'
+    }
+  }
 }

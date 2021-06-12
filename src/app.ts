@@ -5,6 +5,17 @@ import store from './store'
 import './app.scss'
 
 const App = createApp({
+  onLaunch (opt) {
+    console.log('onLaunch:', opt)
+    if (!wx.cloud) {
+      console.error('请使用 2.2.3 或以上的基础库以使用云能力')
+    } else {
+      wx.cloud.init({
+        env: 'local-4gnqjrqm20b167de',
+        traceUser: true,
+      })
+    }
+  },
   onShow (options) {},
   // 入口组件不需要实现 render 方法，即使实现了也会被 taro 所覆盖
 })
