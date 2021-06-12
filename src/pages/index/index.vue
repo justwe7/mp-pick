@@ -121,6 +121,19 @@ export default {
     // AtDrawer,
     xButton,
     settingPage
+  },
+  onShareAppMessage: function (res) {
+    return {
+      title: '你在纠结什么？一起来搞颜色吧！',
+      path: 'pages/index/index',
+      imageUrl: 'https://image.littl.cn/images/2021/06/12/-1.png'
+    }
+  },
+  onShareTimeline: function (res) {
+    return {
+      title: '你在纠结什么？一起来搞颜色吧！',
+      imageUrl: 'https://image.littl.cn/images/2021/06/12/09a5bc8fe849d5f4815a5d8e011d06f0.th.png'
+    }
   }
 }
 </script>
