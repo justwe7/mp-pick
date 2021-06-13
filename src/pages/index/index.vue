@@ -103,6 +103,15 @@ const QQMapWX = require('../../lib/qqmap-wx-jssdk.min.js');
 
 let totalCount = 0
 
+// function getCurrentPage () {
+//   try {
+//     const pages = getCurrentPages()
+//     return pages[pages.length - 1]
+//   } catch (error) {
+//     return ''
+//   }
+// }
+
 let timer
 export default {
   name: 'Home',
@@ -146,7 +155,7 @@ export default {
     });
 
     wx.getLocation().then(res => {
-        console.log(res)
+        // console.log(res)
         if (res.errMsg !== 'getLocation:ok') {
           return false
         }
@@ -165,6 +174,25 @@ export default {
   },
   methods: {
     handleArea () {
+      if (!this.lac) {
+        wx.showModal({
+          title: '提示',
+          content: '获取定位信息失败，请打开定位授权并重启小程序',
+          success: () => {
+            wx.openSetting({
+              success: (res) => {
+                wx.getLocation().then(res => {
+                  if (res.errMsg !== 'getLocation:ok') {
+                    return false
+                  }
+                  this.lac = `${res.latitude},${res.longitude}`
+                })
+              }
+            })
+          }
+        })
+        return false
+      }
       this.isShowDrawer = !this.isShowDrawer
       this.cur = 0
       if (!this.isShowDrawer) {
