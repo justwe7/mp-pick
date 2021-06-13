@@ -63,7 +63,7 @@
       </view> -->
     </AtCard>
     <AtCard
-      note='Tips: 手动编辑不限内容(如人名一起玩真心话大冒险哦~)'
+      note='Tips: 自定义编辑不限内容(填写人名一起玩真心话大冒险哦~)'
       extra=''
       class="card-wrapper"
       title='已选'
@@ -77,7 +77,7 @@
         </view>
       </view>
       <view class="g-btn-area">
-        <AtButton type="secondary" size="small" @tap="handleEdit">手写</AtButton>
+        <AtButton type="secondary" size="small" @tap="handleEdit">自定义</AtButton>
         <AtButton type="primary" size="small" @tap="handleSave">保存</AtButton>
       </view>
     </AtCard>
@@ -85,10 +85,13 @@
 
     <AtFloatLayout
       :isOpened="isEdit"
-      title="手动编辑(以空格分割选项)"
+      title="以空格符分割选项"
       :onClose="() => { isEdit = false }">
-      <AtTextarea :autoFocus="autoFocus" :onConfirm="handleEditSubmit" showConfirmBar :value="listByStr" :onChange="(e) => { listByStr = e }" :maxLength="9999" :count="false" placeholder="填写选项以空格分割"></AtTextarea>
-      <AtButton type="primary" size="small" @tap="handleEditSubmit" class="f-mt-30">确定</AtButton>
+      <AtTextarea :autoFocus="autoFocus" :onConfirm="handleEditSubmit" :value="listByStr" :onChange="(e) => { listByStr = e }" :maxLength="9999" :count="false" placeholder="填写选项以空格分割"></AtTextarea>
+      <view class="m-edit-box">
+        <AtButton type="secondary" size="small" @tap="listByStr = ''" class="f-mt-30">清空</AtButton>
+        <AtButton type="primary" size="small" @tap="handleEditSubmit" class="f-mt-30">确定</AtButton>
+      </view>
     </AtFloatLayout>
 
     <AtToast :isOpened="isToast" :text="errMsg" :onClose="() => { isToast = false }"></AtToast>
@@ -309,12 +312,18 @@ page {
       margin: 0;
     }
   }
+  .m-edit-box {
+    display: flex;
+    .at-button--small {
+      padding: 0 48rpx;
+    }
+  }
   .layout-header__title {
     font-size: 26rpx;
     color: #aaa;
   }
   .at-textarea__textarea {
-    height: 300rpx;
+    height: 380rpx;
   }
   .at-float-layout__container {
     top: 0;

@@ -162,12 +162,12 @@ export default {
         this.lac = `${res.latitude},${res.longitude}`
     })
 
-    // wx.cloud.callFunction({
-    //   name: 'demo',
-    //   complete: res => {
-    //     console.log('callFunction test result: ', res.result)
-    //   }
-    // })
+    wx.cloud.callFunction({
+      name: 'demo',
+      complete: res => {
+        console.log('callFunction test result: ', res.result)
+      }
+    })
   },
   onUnload () {
     this.runStop()
