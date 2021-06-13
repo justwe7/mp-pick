@@ -36,7 +36,7 @@
       <!-- <AtButton type="primary" size="small" @click="handleClick"> {{ onOff ? '结束' : '开始' }}</AtButton> -->
       <!-- <xButton type="pulse" class="f-mr-80" @tap="$location.to('/pages/user/user')">配置</xButton> -->
       <xButton type="pulse" class="f-mr-30" @tap="$location.to('/pages/user/user')">配置</xButton>
-      <xButton type="close" class="f-mr-30" @tap="handleArea">{{isShowDrawer ? '美食模式' : '餐厅模式'}}</xButton>
+      <xButton type="close" class="f-mr-30" @tap="handleArea">{{isShowDrawer ? '美食模式' : '周边餐馆'}}</xButton>
       <!-- <xButton type="pulse" class="f-mr-80" @tap="isShowDrawer = !isShowDrawer">配置</xButton> -->
       <xButton type="raise" @tap="handleClick">{{ onOff ? '结束' : '开始' }}</xButton>
       <!-- <xButton type="fill">开始</xButton>
@@ -101,6 +101,8 @@ const _ = db.command
 
 const QQMapWX = require('../../lib/qqmap-wx-jssdk.min.js');
 
+let totalCount = 0
+
 let timer
 export default {
   name: 'Home',
@@ -164,31 +166,84 @@ export default {
   methods: {
     handleArea () {
       this.isShowDrawer = !this.isShowDrawer
+      this.cur = 0
       if (!this.isShowDrawer) {
         this.list = this.randomList.slice(0)
         return false
       }
+      let pageNum = 1
       wx.showLoading()
 
-      this.qqmapsdk.search({
-        keyword: '美食',
-        page_size: 20,
-        location: this.lac,
-        // location: `${res.latitude},${res.longitude}`,
-        region_fix: 1,
-        page_index: [1,2,3][+new Date%3],
-        success: (res) => {
-          console.log(res);
-          this.restaurantList = res.data.map(item => item.title)
-          this.list = this.restaurantList
-          wx.hideLoading()
+      let totalPage = ~~(totalCount / 20) || 5
 
-        },
-        fail: (res) => {
-          console.log(res);
-          wx.hideLoading()
+      let isFetchArr = []
+      const getPage = () => {
+        let curPage = ~~(Math.random()*100)%totalPage || 1
+        while (isFetchArr.includes(curPage)) {
+          curPage = ~~(Math.random()*100)%totalPage || 1
         }
-      });
+        isFetchArr.push(curPage)
+        return curPage
+      }
+
+      const fetchList = (size) => {
+        return new Promise((resolve, reject) => {
+          this.qqmapsdk.search({
+            keyword: '美食',
+            page_size: 20,
+            location: this.lac,
+            // location: `${res.latitude},${res.longitude}`,
+            region_fix: 1,
+            page_index: getPage(),
+            success: (res) => {
+              // console.log(res);
+              totalCount = res.count
+              // this.restaurantList = res.data.map(item => item.title)
+              // this.list = this.restaurantList
+              // wx.hideLoading()
+              resolve(res.data.map(item => item.title))
+
+            },
+            fail: (res) => {
+              // console.log(res);
+              // wx.hideLoading()
+              reject(res)
+            }
+          });
+        })
+      }
+      Promise.all([fetchList(), fetchList()]).then(listArr => {
+        const list = listArr.reduce((result, target) => {
+          result.push(...target)
+          return result
+        }, [])
+        this.restaurantList = list
+        this.list = list
+        wx.hideLoading()
+      }).catch(err => {
+        wx.hideLoading()
+      })
+
+      // this.qqmapsdk.search({
+      //   keyword: '美食',
+      //   page_size: 20,
+      //   location: this.lac,
+      //   // location: `${res.latitude},${res.longitude}`,
+      //   region_fix: 1,
+      //   page_index: [1,2,3][+new Date%3],
+      //   success: (res) => {
+      //     console.log(res);
+      //     totalCount = res.count
+      //     this.restaurantList = res.data.map(item => item.title)
+      //     this.list = this.restaurantList
+      //     wx.hideLoading()
+
+      //   },
+      //   fail: (res) => {
+      //     console.log(res);
+      //     wx.hideLoading()
+      //   }
+      // });
     },
     initFontColor () {
       this.fontColorIdx = 0

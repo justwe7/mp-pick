@@ -2,7 +2,7 @@
   <view class="user-home">
     <AtCard
       note=''
-      extra='点选自动添加'
+      extra='点选添加选项'
       title='可选'
       thumb='https://image.littl.cn/images/2021/06/12/09a5bc8fe849d5f4815a5d8e011d06f0.png'
     >
@@ -63,7 +63,7 @@
       </view> -->
     </AtCard>
     <AtCard
-      note='编辑完成记得保存哦~~~'
+      note='Tips: 手动编辑不限内容(如人名一起玩真心话大冒险哦~)'
       extra=''
       class="card-wrapper"
       title='已选'
