@@ -178,14 +178,11 @@ export default {
   },
   methods: {
     fetchPromote () { // 推广云函数
-      wx.cloud.callFunction({
-        name: 'demo',
-        complete: res => {
-          const meituan = res.result?.meituan?.we_app_info
-          if (meituan) {
-            this.mpPathInfo.meituan.path = meituan.page_path
-          }
-          console.log('log-meituan: ', res.result)
+      this.$api.cf({name: 'demo'}).then(res => {
+        console.log('log-meituan: ', res)
+        const meituan = res?.meituan?.we_app_info
+        if (meituan) {
+          this.mpPathInfo.meituan.path = meituan.page_path
         }
       })
     },

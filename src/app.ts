@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import store from './store'
+import apiConf from './api/index';
 // import xButton from './components/x-button.vue'
 
 import './app.scss'
@@ -40,6 +41,8 @@ const promisify = (fnName, options = {}) => {
 }
 
 App.config.globalProperties.$promisify = promisify
+
+App.config.globalProperties.$api = apiConf // 网络请求封装
 
 App.config.globalProperties.$location = {
   to (data) { // 页面跳转
