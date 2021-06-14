@@ -4,6 +4,7 @@
     <image src="../../assets/img/tutu-big.png" mode="widthFix" class="a-rabbit-img-big"></image>
     <image src="../../assets/img/slogan.png" mode="widthFix" class="a-slogan-img-big"></image>
     <image src="../../assets/img/icon-1.png" mode="widthFix" class="a-icon-1"></image>
+    <!-- <view class="icon-sprite"></view> -->
 
     <view class="a-game-box">
       <image src="../../assets/img/game1.png" mode="widthFix" class="u-game-img1"></image>
@@ -511,12 +512,23 @@ page {
     }
     .a-icon-1 {
       position: absolute;
-      width: 96rpx * 0.9;
-      height: 84rpx * 0.9;
+      width: 88rpx * 0.9;
+      height: 77rpx * 0.9;
       left: 50%;
       transform: translateX(-50%);
       bottom: 170rpx;
     }
+    // .icon-sprite {
+    //   position: absolute;
+    //   width: 92.4rpx;
+    //   height: 55rpx;
+    //   left: 50%;
+    //   transform: translateX(-50%);
+    //   bottom: 170rpx;
+    //   background-color: red;
+    //   background: url('../../assets/img/icon-sprite.png') no-repeat / 462rpx 385rpx;
+    //   background-position: 0 0;
+    // }
   }
 }
 @keyframes filp180 {
