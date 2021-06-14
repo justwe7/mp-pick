@@ -207,7 +207,7 @@ export default {
     handleAddItem (item) {
       console.log(item)
       if (this.optionList.includes(item)) {
-        this.toast('已存在“' + item + '”')
+        this.toast('已存在"' + item + '"')
         return false
       }
       console.log(this.optionList.includes(item))

@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import store from './store'
-import apiConf from './api/index';
+import apiConf from './api/index'
+import utils from './lib/utils'
 // import xButton from './components/x-button.vue'
 
 import './app.scss'
@@ -41,6 +42,8 @@ const promisify = (fnName, options = {}) => {
 }
 
 App.config.globalProperties.$promisify = promisify
+
+App.config.globalProperties.$util = utils
 
 App.config.globalProperties.$api = apiConf // 网络请求封装
 
