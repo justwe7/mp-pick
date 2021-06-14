@@ -2,7 +2,7 @@
   <view class="user-home">
     <AtCard
       note=''
-      extra='点选添加选项'
+      extra='点击列表项添加至下方'
       title='可选'
       thumb='https://image.littl.cn/images/2021/06/14/canpan-icon.th.png'
     >
@@ -22,7 +22,7 @@
         :onClick="handleChangeType">
         <AtTabsPane tabDirection='vertical' :current="current" :index="0">
           <view class="m-options-box" style='font-size:22rpx;height: 300rpx;'>
-            <view class="option-item" v-for="(item, index) in [...menusList[0], ...menusList[1], ...menusList[2]]" @tap="handleAddItem(item)">
+            <view class="option-item" :key="index" v-for="(item, index) in [...menusList[0], ...menusList[1], ...menusList[2]]" @tap="handleAddItem(item)">
               {{item}}
             </view>
           </view>
@@ -30,21 +30,21 @@
         </AtTabsPane>
         <AtTabsPane tabDirection='vertical' :current="current" :index="1">
           <view class="m-options-box" style='font-size:22rpx;height: 300rpx;'>
-            <view class="option-item" v-for="(item, index) in menusList[0]" @tap="handleAddItem(item)">
+            <view class="option-item" :key="index" v-for="(item, index) in menusList[0]" @tap="handleAddItem(item)">
               {{item}}
             </view>
           </view>
         </AtTabsPane>
         <AtTabsPane tabDirection='vertical' :current="current" :index="2">
           <view class="m-options-box" style='font-size:22rpx;height: 300rpx;'>
-            <view class="option-item" v-for="(item, index) in menusList[1]" @tap="handleAddItem(item)">
+            <view class="option-item" :key="index" v-for="(item, index) in menusList[1]" @tap="handleAddItem(item)">
               {{item}}
             </view>
           </view>
         </AtTabsPane>
         <AtTabsPane tabDirection='vertical' :current="current" :index="2">
           <view class="m-options-box" style='font-size:22rpx;height: 300rpx;'>
-            <view class="option-item" v-for="(item, index) in menusList[2]" @tap="handleAddItem(item)">
+            <view class="option-item" :key="index" v-for="(item, index) in menusList[2]" @tap="handleAddItem(item)">
               {{item}}
             </view>
           </view>
@@ -72,7 +72,7 @@
       <!-- <view class="f-hr"></view> -->
       <!-- <view class="g-title">已选项：</view> -->
       <view class="g-result-box">
-        <view class="m-item" v-for="(item, index) in optionList" @tap="handleDelIdx(index)">
+        <view class="m-item" :key="item" v-for="(item, index) in optionList" :style="'backgroundColor:' + colorsFont[index]" @tap="handleDelIdx(index)">
           {{item}} <view class='at-icon at-icon-close'></view>
         </view>
       </view>
@@ -102,6 +102,10 @@
 import { ref } from 'vue'
 import { useStore } from 'vuex'
 import { AtButton, AtCard, AtIcon, AtTabs, AtTabsPane, AtFloatLayout, AtTextarea, AtToast } from 'taro-ui-vue'
+
+const colorArr = ['#0A81AB', '#FF96AD', '#F54748', '#FB9300', '#962D2D', '#7952B3', '#FFC107']
+
+const getRandomColor = () => colorArr[~~(Math.random()*Math.ceil(colorArr.length)) % colorArr.length]
 
 export default {
   name: 'User',
@@ -141,6 +145,7 @@ export default {
       isEdit: false,
       current: 0,
       listByStr: '',
+      colorsFont: [],
       menusList: [ // 选项列表
         [
           '凉皮肉夹馍',
@@ -186,6 +191,8 @@ export default {
       ]
     }
   },
+  computed: {
+  },
   watch: {
     'isEdit' (newVal) {
       setTimeout(() => {
@@ -193,24 +200,28 @@ export default {
       }, 300)
     }
   },
+  onLoad () {
+    this.colorsFont = Array(this.optionList.length).fill(null).map(getRandomColor)
+  },
   methods: {
     toast (text) {
       this.isToast = true
       this.errMsg = text
     },
     handleDelIdx (e) {
+      this.colorsFont.splice(e, 1)
       this.optionList.splice(e, 1)
     },
     handleChangeType (idx) {
       this.current = idx
     },
     handleAddItem (item) {
-      console.log(item)
+      // console.log(item)
       if (this.optionList.includes(item)) {
         this.toast('已存在"' + item + '"')
         return false
       }
-      console.log(this.optionList.includes(item))
+      this.colorsFont.push(getRandomColor())
       this.optionList.push(item)
     },
     handleEdit () {
@@ -219,6 +230,10 @@ export default {
     },
     handleEditSubmit (e) {
       this.optionList = this.listByStr.trim().split('\n').join(' ').split(' ').filter(v => v)
+      const addLen = this.optionList.length - this.colorsFont.length
+      if (addLen > 0) {
+        this.colorsFont.push(...Array(addLen).fill(null).map(getRandomColor))
+      }
       // console.log(this.listByStr)
       this.updateList(this.optionList)
       this.isEdit = false
@@ -272,10 +287,15 @@ page {
   padding-bottom: 50rpx;
   .m-options-box {
     height: 300rpx;
+    color: #666;
     .option-item {
       padding: 10rpx 0 10rpx 30rpx;
       @include border-1px-b(#bdc7c9, calc(100% - 30rpx), 30rpx);
     }
+  }
+  .at-card__header-extra {
+    max-width: 220rpx;
+    font-size: 22rpx;
   }
   .card-wrapper {
     margin-top: 20rpx;
