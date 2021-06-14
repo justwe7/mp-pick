@@ -4,7 +4,7 @@
       note=''
       extra='点选添加选项'
       title='可选'
-      thumb='https://image.littl.cn/images/2021/06/12/09a5bc8fe849d5f4815a5d8e011d06f0.png'
+      thumb='https://image.littl.cn/images/2021/06/14/canpan-icon.th.png'
     >
       <!-- 这也是内容区 可以随意定义功能 -->
       <!-- {{ list }} -->
@@ -67,7 +67,7 @@
       extra=''
       class="card-wrapper"
       title='已选'
-      thumb='https://image.littl.cn/images/2021/06/12/09a5bc8fe849d5f4815a5d8e011d06f0.png'
+      thumb='https://image.littl.cn/images/2021/06/14/canju-icon.png'
     >
       <!-- <view class="f-hr"></view> -->
       <!-- <view class="g-title">已选项：</view> -->
