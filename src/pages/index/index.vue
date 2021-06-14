@@ -30,7 +30,7 @@
         <view class="dot"></view>
       </view>
     </view>
-    <!-- <xButton type="pulse" class="f-mr-30" @tap="isAd = true">现在下单</xButton> -->
+    <!-- <button @tap="foo">测试按钮</button> -->
 
     <view class="g-control" v-if="hasResult">
       <!-- <AtButton type="primary" size="small" @click="handleClick"> {{ onOff ? '结束' : '开始' }}</AtButton> -->
@@ -66,11 +66,11 @@
       :onClose="() => {isAd = false}"
     >
       <view class="a-ad-box">
-        <navigator class="ad-block" target="miniProgram" open-type="navigate" app-id="wxde8ac0a21135c07d" path="/index/pages/h5/h5?lch=cps:waimai:5:a144a9fa40a42c55af00214bb4bb3993971:14962dingdanxiawaimai:2:70690&f_userId=1&weburl=https%3A%2F%2Fclick.meituan.com%2Ft%3Ft%3D1%26c%3D1%26p%3DOWMpZ-uzIFOVe6JyOONs3dXuqV0qcAf-r-KCvHdXiNfM3oMXlDSgQ1lHQ7sc1bHIMXeq2XWRYP9S3VMvpbQU5suS6wIbvlY8ysKwoMucfvMNkUpDUoZB8UzfJotTLsOtFBVyJPNh84wtIvYJA4YbhskXnQTJHG_vq68uUpWVeXKz1wSjvdQ_u1PJRo5gTASsPjTgdf7BehTj5zPJxndIrav5AnCfNXFwR8xQAaSRU4qhjOcpjdWshmD6IbIfodDtwdi__LfwtUHfPb01QIsqlPSy3VHdhAIZfNEnZStQykvHk-LSdCklNojCZOUbaJwIj9iEPKTi9vRRmaU9gMfeNBmeDP3OfoyXK8-86Y2KqXTKKhrw9HL6lMHqh72xLQoSza5XNhEfc7TfOqswNBK9eA5NRxkYYvFkcrCx1tTHg23zjLO2bIuvv6KfF-1lE3v5AKFAhUB39c2XD46C9em7dM2vW8Knu6-t5MjRD-YxVNp9T01SfjR3VXzNYEBoRkEpG_5pGdZ3wn6E8MJGrfqCXLBWomAqxbiYZ3GLypPSJ_Gk0hLuc8THawjmzP3UqIAtMef6FZYVHv8lqwJ_-h8E8ePYhGq7pN73daDKoKHAz1_QeAZEQ5EG4BqcILt2bqP6KSUv-J212ANX8wE_xtc3tWR8X32YnYsBeDDiQnYCtdrY5khSMPjDtSGfaftjikxO-Gj5xRXlzKWYKqneEv31njAQ5UeE5EqWGRu9MeXfEpjWn98uQEY-eoDqmb63GVWg&f_token=1">
+        <navigator class="ad-block" target="miniProgram" open-type="navigate" :app-id="mpPathInfo.meituan.appid" :path="mpPathInfo.meituan.path">
           <image src="https://image.littl.cn/images/2021/06/12/09a5bc8fe849d5f4815a5d8e011d06f0.th.png" mode="widthFix" class="u-ad-img-logo"></image>
           <button class="u-ad-btn" size="mini">美团下单</button>
         </navigator>
-        <navigator class="ad-block" target="miniProgram" open-type="navigate" app-id="wxece3a9a4c82f58c9" path="ele-recommend-price/pages/guest/index?inviterId=19abb5a2&chInfo=ch_wechat_chsub_CopyLink&_ltracker_f=">
+        <navigator class="ad-block" target="miniProgram" open-type="navigate" :app-id="mpPathInfo.ele.appid" :path="mpPathInfo.ele.path">
           <image src="https://image.littl.cn/images/2021/06/12/09a5bc8fe849d5f4815a5d8e011d06f0.th.png" mode="widthFix" class="u-ad-img-logo"></image>
           <button class="u-ad-btn" size="mini">饿了么下单</button>
         </navigator>
@@ -135,7 +135,17 @@ export default {
       restaurantList: [], // 餐馆列表
       // maxIndex: 0,
       qqmapsdk: null,
-      lac: ''
+      lac: '',
+      mpPathInfo: {
+        meituan: {
+          appid: 'wxde8ac0a21135c07d',
+          path: '/index/pages/h5/h5?lch=cps:waimai:5:a144a9fa40a42c55af00214bb4bb3993971:14962dingdanxiawaimai:2:70690&f_userId=1&weburl=https%3A%2F%2Fclick.meituan.com%2Ft%3Ft%3D1%26c%3D1%26p%3DOWMpZ-uzIFOVe6JyOONs3dXuqV0qcAf-r-KCvHdXiNfM3oMXlDSgQ1lHQ7sc1bHIMXeq2XWRYP9S3VMvpbQU5suS6wIbvlY8ysKwoMucfvMNkUpDUoZB8UzfJotTLsOtFBVyJPNh84wtIvYJA4YbhskXnQTJHG_vq68uUpWVeXKz1wSjvdQ_u1PJRo5gTASsPjTgdf7BehTj5zPJxndIrav5AnCfNXFwR8xQAaSRU4qhjOcpjdWshmD6IbIfodDtwdi__LfwtUHfPb01QIsqlPSy3VHdhAIZfNEnZStQykvHk-LSdCklNojCZOUbaJwIj9iEPKTi9vRRmaU9gMfeNBmeDP3OfoyXK8-86Y2KqXTKKhrw9HL6lMHqh72xLQoSza5XNhEfc7TfOqswNBK9eA5NRxkYYvFkcrCx1tTHg23zjLO2bIuvv6KfF-1lE3v5AKFAhUB39c2XD46C9em7dM2vW8Knu6-t5MjRD-YxVNp9T01SfjR3VXzNYEBoRkEpG_5pGdZ3wn6E8MJGrfqCXLBWomAqxbiYZ3GLypPSJ_Gk0hLuc8THawjmzP3UqIAtMef6FZYVHv8lqwJ_-h8E8ePYhGq7pN73daDKoKHAz1_QeAZEQ5EG4BqcILt2bqP6KSUv-J212ANX8wE_xtc3tWR8X32YnYsBeDDiQnYCtdrY5khSMPjDtSGfaftjikxO-Gj5xRXlzKWYKqneEv31njAQ5UeE5EqWGRu9MeXfEpjWn98uQEY-eoDqmb63GVWg&f_token=1'
+        },
+        ele: {
+          appid: 'wxece3a9a4c82f58c9',
+          path: 'ele-recommend-price/pages/guest/index?inviterId=19abb5a2&chInfo=ch_wechat_chsub_CopyLink&_ltracker_f='
+        }
+      }
     }
   },
   computed: {
@@ -148,6 +158,7 @@ export default {
     // this.maxIndex = this.list.length - 1
   },
   onLoad () {
+    this.fetchPromote()
     this.initFontColor()
 
     this.qqmapsdk = new QQMapWX({
@@ -161,18 +172,34 @@ export default {
         }
         this.lac = `${res.latitude},${res.longitude}`
     })
-
-    wx.cloud.callFunction({
-      name: 'demo',
-      complete: res => {
-        console.log('callFunction test result: ', res.result)
-      }
-    })
   },
   onUnload () {
     this.runStop()
   },
   methods: {
+    fetchPromote () { // 推广云函数
+      wx.cloud.callFunction({
+        name: 'demo',
+        complete: res => {
+          const meituan = res.result?.meituan?.we_app_info
+          if (meituan) {
+            this.mpPathInfo.meituan.path = meituan.page_path
+          }
+          console.log('log-meituan: ', res.result)
+        }
+      })
+    },
+    foo () {
+      wx.cloud.callFunction({
+        name: 'demo',
+        config: {
+          // env: 'local-4gnqjrqm20b167de'
+        },
+        complete: res => {
+          console.log('callFunction test result: ', res.result)
+        }
+      })
+    },
     handleArea () {
       if (!this.lac) {
         wx.showModal({
