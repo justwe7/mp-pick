@@ -1,5 +1,5 @@
 export default {
-  navigationBarTitleText: '配置',
+  navigationBarTitleText: '自定义',
   navigationBarTextStyle: "black",
-  navigationBarBackgroundColor: "#fdfaf6",
+  navigationBarBackgroundColor: "#F6F6F6",
 }

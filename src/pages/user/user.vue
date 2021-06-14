@@ -66,7 +66,7 @@
       note='Tips: 自定义编辑不限内容(填写人名一起玩真心话大冒险哦~)'
       extra=''
       class="card-wrapper"
-      title='已选'
+      :title="`已选(${optionList.length})`"
       thumb='https://image.littl.cn/images/2021/06/14/canju-icon.png'
     >
       <!-- <view class="f-hr"></view> -->
@@ -200,8 +200,8 @@ export default {
       }, 300)
     }
   },
-  onLoad () {
-    this.colorsFont = Array(this.optionList.length).fill(null).map(getRandomColor)
+  onShow () {
+    !this.colorsFont.length && (this.colorsFont = Array(this.optionList.length).fill(null).map(getRandomColor))
   },
   methods: {
     toast (text) {
@@ -268,7 +268,7 @@ export default {
 @import "~taro-ui-vue/dist/style/components/icon.scss";
 
 page {
-  background-color: #fdfaf6;
+  background-color: #F6F6F6;
 }
 .f-hr {
   height: 30rpx;
@@ -285,6 +285,12 @@ page {
   display: flex;
   flex-direction: column;
   padding-bottom: 50rpx;
+  .at-card {
+    border-color: #A7C5EB;
+    .at-tabs__item.at-tabs__item--active {
+      color: #2978B5;
+    }
+  }
   .m-options-box {
     height: 300rpx;
     color: #666;
