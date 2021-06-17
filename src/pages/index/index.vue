@@ -325,7 +325,7 @@ export default {
         this.cur++
         this.fontColorIdx++
         this.cur > this.maxIndex && (this.cur = 0)
-      }, 150);
+      }, 100);
       this.onOff = true
     },
     runStop () {
