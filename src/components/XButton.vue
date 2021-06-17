@@ -121,6 +121,7 @@ $colors: (
   border: 2rpx solid;
   font: inherit;
   line-height: 1;
+  font-size: 26rpx;
   // margin: 0.5em;
   &.large {
     display: block;

@@ -130,7 +130,7 @@ export default {
   components: {
     AtButton,
     AtCard,
-    AtIcon,
+    // AtIcon,
     AtTabs,
     AtTabsPane,
     AtFloatLayout,
@@ -354,6 +354,10 @@ page {
   .at-float-layout__container {
     top: 0;
     bottom: auto;
+    transform: translate3d(0, -100%, 0);
+  }
+  .at-float-layout--active .at-float-layout__container {
+    transform: translate3d(0, 0, 0);
   }
 }
 </style>
