@@ -93,7 +93,7 @@ import { AtSwitch, AtCurtain } from 'taro-ui-vue'
 import xButton from '../../components/XButton.vue'
 // import NumberDisplay from '../../components/NumberDisplay.vue'
 // import NumberSubmit from '../../components/NumberSubmit.vue'
-import settingPage from './components/settingDrawer.vue';
+// import settingPage from './components/settingDrawer.vue';
 
 const colorArr = ['#0a1931', '#fff', '#f7fd04', '#21094e', '#f55c47', '#344fa1', '#cf0000', '#5b6d5b', '#f58634', '#3c415c', '#fff600', '#26001b', '#ff005c']
 
@@ -166,13 +166,13 @@ export default {
         key: '5RZBZ-BVBK5-U43I5-Q5RMN-HFOYH-LLFZR'
     });
 
-    wx.getLocation().then(res => {
-        // console.log(res)
-        if (res.errMsg !== 'getLocation:ok') {
-          return false
-        }
-        this.lac = `${res.latitude},${res.longitude}`
-    })
+    // wx.getLocation().then(res => {
+    //     // console.log(res)
+    //     if (res.errMsg !== 'getLocation:ok') {
+    //       return false
+    //     }
+    //     this.lac = `${res.latitude},${res.longitude}`
+    // })
   },
   onUnload () {
     this.runStop()
@@ -198,25 +198,34 @@ export default {
         }
       })
     },
-    handleArea () {
+    async handleArea () {
       if (!this.lac) {
-        wx.showModal({
-          title: '提示',
-          content: '获取定位信息失败，请打开定位授权并重启小程序',
-          success: () => {
-            wx.openSetting({
-              success: (res) => {
-                wx.getLocation().then(res => {
-                  if (res.errMsg !== 'getLocation:ok') {
-                    return false
-                  }
-                  this.lac = `${res.latitude},${res.longitude}`
-                })
-              }
-            })
-          }
-        })
-        return false
+        let res
+        try {
+          res = await wx.getLocation()
+        } catch (error) {
+          res = {}
+        }
+        if (res.errMsg !== 'getLocation:ok') {
+          wx.showModal({
+            title: '提示',
+            content: '获取定位信息失败，请打开定位授权并重启小程序',
+            success: () => {
+              wx.openSetting({
+                success: (res) => {
+                  wx.getLocation().then(res => {
+                    if (res.errMsg !== 'getLocation:ok') {
+                      return false
+                    }
+                    this.lac = `${res.latitude},${res.longitude}`
+                  })
+                }
+              })
+            }
+          })
+          return false
+        }
+        this.lac = `${res.latitude},${res.longitude}`
       }
       this.isShowDrawer = !this.isShowDrawer
       this.cur = 0
@@ -232,7 +241,7 @@ export default {
       let isFetchArr = []
       const getPage = () => {
         let curPage = ~~(Math.random()*100)%totalPage || 1
-        while (isFetchArr.includes(curPage)) {
+        while (isFetchArr.includes(curPage) || curPage > 5) {
           curPage = ~~(Math.random()*100)%totalPage || 1
         }
         isFetchArr.push(curPage)
@@ -242,7 +251,7 @@ export default {
       const fetchList = (size) => {
         return new Promise((resolve, reject) => {
           this.qqmapsdk.search({
-            keyword: '美食',
+            keyword: '饭店',
             page_size: 20,
             location: this.lac,
             // location: `${res.latitude},${res.longitude}`,
@@ -334,8 +343,8 @@ export default {
     // AtButton,
     // AtDrawer,
     xButton,
-    settingPage,
-    AtSwitch,
+    // settingPage,
+    // AtSwitch,
     AtCurtain
   },
   onShareAppMessage: function (res) {
