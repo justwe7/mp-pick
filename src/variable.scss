@@ -154,6 +154,10 @@ $type: after) {
   }
 }
 
+.f-vhidden {
+  visibility: hidden !important;
+}
+
 %wordbreak {
   //文本自动换行
   word-wrap: break-word;

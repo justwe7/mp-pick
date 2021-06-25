@@ -32,14 +32,9 @@
       </view>
     </view>
     <!-- <button @tap="foo">测试按钮</button> -->
-
-    <view class="g-control" v-if="hasResult">
-      <!-- <AtButton type="primary" size="small" @click="handleClick"> {{ onOff ? '结束' : '开始' }}</AtButton> -->
-      <!-- <xButton type="pulse" class="f-mr-80" @tap="$location.to('/pages/user/user')">配置</xButton> -->
-      <xButton type="pulse" class="f-mr-30" @tap="$location.to('/pages/user/user')">配置</xButton>
+    <view class="g-control" :class="{'f-vhidden': !hasResult || onOff}">
+      <xButton type="pulse" class="f-mr-30" @tap="$location.to('/pages/user/user')">配置选项</xButton>
       <xButton type="close" class="f-mr-30" @tap="handleArea">{{isShowDrawer ? '美食模式' : '周边餐馆'}}</xButton>
-      <!-- <xButton type="pulse" class="f-mr-80" @tap="isShowDrawer = !isShowDrawer">配置</xButton> -->
-      <xButton type="raise" @tap="handleClick">{{ onOff ? '结束' : '开始' }}</xButton>
       <!-- <xButton type="fill">开始</xButton>
       <xButton type="pulse">开始</xButton>
       <xButton type="close">开始</xButton>
@@ -47,7 +42,11 @@
       <xButton type="up">开始</xButton>
       <xButton type="offset">开始</xButton> -->
     </view>
-    <view class="g-control" v-else>
+
+    <view class="g-bottom-control" v-if="hasResult">
+      <xButton type="raise" class="u-button" size="large" @tap="handleClick">{{ onOff ? '结束' : '开始' }}</xButton>
+    </view>
+    <view class="g-bottom-control" v-else>
       <!-- <AtButton type="primary" size="small" @click="handleClick"> {{ onOff ? '结束' : '开始' }}</AtButton> -->
       <!-- <xButton type="pulse" class="f-mr-80" @tap="$location.to('/pages/user/user')">配置</xButton> -->
       <xButton type="pulse" class="f-mr-30" @tap="isAd = true">现在下单</xButton>
@@ -483,7 +482,15 @@ page {
       // display: flex;
       text-align: center;
       width: 90vw;
-      height: 300rpx;
+      height: 270rpx;
+    }
+    .g-bottom-control {
+      @extend %centerblock;
+      text-align: center;
+      width: 90vw;
+      .u-button {
+        max-width: 300rpx;
+      }
     }
     .a-game-box {
       opacity: 0.8;
