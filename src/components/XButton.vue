@@ -83,7 +83,7 @@ export default {
   // Make a map with the class names and matching colors
 $colors: (
   fill: #a972cb,
-  pulse: #fad586,
+  pulse: #6998AB,
   close: #ff7f82,
   raise: #29bb89,
   up: #e4cb58,
@@ -125,6 +125,10 @@ $colors: (
   // margin: 0.5em;
   &.large {
     display: block;
+    padding: 1em 2em;
+  }
+  &.big {
+    display: inline-block;
     padding: 1em 2em;
   }
   &.default {

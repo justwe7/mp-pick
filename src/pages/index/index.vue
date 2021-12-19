@@ -36,10 +36,12 @@
     <view class="g-control" v-if="hasResult">
       <!-- <AtButton type="primary" size="small" @click="handleClick"> {{ onOff ? '结束' : '开始' }}</AtButton> -->
       <!-- <xButton type="pulse" class="f-mr-80" @tap="$location.to('/pages/user/user')">配置</xButton> -->
-      <xButton type="pulse" class="f-mr-30" @tap="$location.to('/pages/user/user')">配置</xButton>
-      <xButton type="close" class="f-mr-30" @tap="handleArea">{{isShowDrawer ? '美食模式' : '周边餐馆'}}</xButton>
+      <view class="f-pb-20">
+        <xButton type="raise" @tap="handleClick" size="big">{{ onOff ? '立即停止' : '现在选择' }}</xButton>
+      </view>
+      <xButton type="pulse" class="f-mr-30" @tap="$location.to('/pages/user/user')">查看候选菜单</xButton>
+      <xButton type="close" class="f-mr-30" @tap="handleArea">切到{{isShowDrawer ? '菜谱' : '餐馆'}}模式</xButton>
       <!-- <xButton type="pulse" class="f-mr-80" @tap="isShowDrawer = !isShowDrawer">配置</xButton> -->
-      <xButton type="raise" @tap="handleClick">{{ onOff ? '结束' : '开始' }}</xButton>
       <!-- <xButton type="fill">开始</xButton>
       <xButton type="pulse">开始</xButton>
       <xButton type="close">开始</xButton>
@@ -50,15 +52,9 @@
     <view class="g-control" v-else>
       <!-- <AtButton type="primary" size="small" @click="handleClick"> {{ onOff ? '结束' : '开始' }}</AtButton> -->
       <!-- <xButton type="pulse" class="f-mr-80" @tap="$location.to('/pages/user/user')">配置</xButton> -->
-      <xButton type="pulse" class="f-mr-30" @tap="isAd = true">现在下单</xButton>
+      <xButton type="pulse" class="f-mr-30" @tap="isAd = true">外卖下单</xButton>
       <!-- <xButton type="pulse" class="f-mr-80" @tap="isShowDrawer = !isShowDrawer">配置</xButton> -->
-      <xButton type="raise" @tap="hasResult = !hasResult">重新选择</xButton>
-      <!-- <xButton type="fill">开始</xButton>
-      <xButton type="pulse">开始</xButton>
-      <xButton type="close">开始</xButton>
-      <xButton type="raise">开2始</xButton>
-      <xButton type="up">开始</xButton>
-      <xButton type="offset">开始</xButton> -->
+      <xButton type="raise" @tap="hasResult = !hasResult">不满意，重新选择</xButton>
     </view>
 
     <AtCurtain
