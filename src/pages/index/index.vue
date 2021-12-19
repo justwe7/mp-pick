@@ -67,14 +67,14 @@
       :onClose="() => {isAd = false}"
     >
       <view class="a-ad-box">
-        <navigator class="ad-block" target="miniProgram" open-type="navigate" :app-id="mpPathInfo.meituan.appid" :short-link="mpPathInfo.meituan.shortLink">
+        <view class="ad-block" @tap="handleToMp('meituan')" target="miniProgram" open-type="navigate" :app-id="mpPathInfo.meituan.appid" :short-link="mpPathInfo.meituan.shortLink">
           <image src="https://image.littl.cn/images/2021/06/12/09a5bc8fe849d5f4815a5d8e011d06f0.th.png" mode="widthFix" class="u-ad-img-logo"></image>
           <button class="u-ad-btn" size="mini">美团下单</button>
-        </navigator>
-        <navigator class="ad-block" target="miniProgram" open-type="navigate" :app-id="mpPathInfo.ele.appid" :short-link="mpPathInfo.ele.shortLink">
+        </view>
+        <view class="ad-block" @tap="handleToMp('ele')" target="miniProgram" open-type="navigate" :app-id="mpPathInfo.ele.appid" :short-link="mpPathInfo.ele.shortLink">
           <image src="https://image.littl.cn/images/2021/06/12/09a5bc8fe849d5f4815a5d8e011d06f0.th.png" mode="widthFix" class="u-ad-img-logo"></image>
           <button class="u-ad-btn" size="mini">饿了么下单</button>
-        </navigator>
+        </view>
       </view>
     </AtCurtain>
     <!-- <AtButton
@@ -180,6 +180,15 @@ export default {
     this.runStop()
   },
   methods: {
+    handleToMp (plantform) {
+      wx.navigateToMiniProgram({
+        appId: this.mpPathInfo[plantform].appid,
+        shortLink: this.mpPathInfo[plantform].shortLink,
+        success: (res) => {
+          this.isAd = false
+        }
+      })
+    },
     fetchPromote () { // 推广云函数
       this.$api.cf({name: 'demo'}).then(res => {
         console.log('log-meituan: ', res)
