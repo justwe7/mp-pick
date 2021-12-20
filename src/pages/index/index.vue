@@ -33,8 +33,8 @@
     </view>
     <!-- <button @tap="foo">测试按钮</button> -->
     <view class="g-control" :class="{'f-vhidden': !hasResult || onOff}">
-      <xButton type="pulse" class="f-mr-30" @tap="$location.to('/pages/user/user')">配置选项</xButton>
-      <xButton type="close" class="f-mr-30" @tap="handleArea">{{isShowDrawer ? '美食模式' : '周边餐馆'}}</xButton>
+      <xButton type="pulse" class="f-mr-30" @tap="$location.to('/pages/user/user')">查看候选菜单</xButton>
+      <xButton type="close" class="f-mr-30" @tap="handleArea">切到{{isShowDrawer ? '菜谱' : '餐馆'}}模式</xButton>
       <!-- <xButton type="fill">开始</xButton>
       <xButton type="pulse">开始</xButton>
       <xButton type="close">开始</xButton>
@@ -44,20 +44,14 @@
     </view>
 
     <view class="g-bottom-control" v-if="hasResult">
-      <xButton type="raise" class="u-button" size="large" @tap="handleClick">{{ onOff ? '结束' : '开始' }}</xButton>
+      <xButton type="raise" @tap="handleClick" size="big">{{ onOff ? '立即停止' : '现在选择' }}</xButton>
     </view>
     <view class="g-bottom-control" v-else>
       <!-- <AtButton type="primary" size="small" @click="handleClick"> {{ onOff ? '结束' : '开始' }}</AtButton> -->
       <!-- <xButton type="pulse" class="f-mr-80" @tap="$location.to('/pages/user/user')">配置</xButton> -->
-      <xButton type="pulse" class="f-mr-30" @tap="isAd = true">现在下单</xButton>
+      <xButton type="pulse" class="f-mr-30" @tap="isAd = true">外卖下单</xButton>
       <!-- <xButton type="pulse" class="f-mr-80" @tap="isShowDrawer = !isShowDrawer">配置</xButton> -->
-      <xButton type="raise" @tap="hasResult = !hasResult">重新选择</xButton>
-      <!-- <xButton type="fill">开始</xButton>
-      <xButton type="pulse">开始</xButton>
-      <xButton type="close">开始</xButton>
-      <xButton type="raise">开2始</xButton>
-      <xButton type="up">开始</xButton>
-      <xButton type="offset">开始</xButton> -->
+      <xButton type="raise" @tap="hasResult = !hasResult">不满意，重新选择</xButton>
     </view>
 
     <AtCurtain
@@ -66,14 +60,14 @@
       :onClose="() => {isAd = false}"
     >
       <view class="a-ad-box">
-        <navigator class="ad-block" target="miniProgram" open-type="navigate" :app-id="mpPathInfo.meituan.appid" :path="mpPathInfo.meituan.path">
+        <view class="ad-block" @tap="handleToMp('meituan')" target="miniProgram" open-type="navigate" :app-id="mpPathInfo.meituan.appid" :short-link="mpPathInfo.meituan.shortLink">
           <image src="https://image.littl.cn/images/2021/06/12/09a5bc8fe849d5f4815a5d8e011d06f0.th.png" mode="widthFix" class="u-ad-img-logo"></image>
           <button class="u-ad-btn" size="mini">美团下单</button>
-        </navigator>
-        <navigator class="ad-block" target="miniProgram" open-type="navigate" :app-id="mpPathInfo.ele.appid" :path="mpPathInfo.ele.path">
+        </view>
+        <view class="ad-block" @tap="handleToMp('ele')" target="miniProgram" open-type="navigate" :app-id="mpPathInfo.ele.appid" :short-link="mpPathInfo.ele.shortLink">
           <image src="https://image.littl.cn/images/2021/06/12/09a5bc8fe849d5f4815a5d8e011d06f0.th.png" mode="widthFix" class="u-ad-img-logo"></image>
           <button class="u-ad-btn" size="mini">饿了么下单</button>
-        </navigator>
+        </view>
       </view>
     </AtCurtain>
 
@@ -143,10 +137,12 @@ export default {
       mpPathInfo: {
         meituan: {
           appid: 'wxde8ac0a21135c07d',
+          shortLink: '#小程序://美团外卖/美团外卖/8Yg2LcKpfCdMNtr',
           path: '/index/pages/h5/h5?lch=cps:waimai:5:a144a9fa40a42c55af00214bb4bb3993971:14962dingdanxiawaimai:2:70690&f_userId=1&weburl=https%3A%2F%2Fclick.meituan.com%2Ft%3Ft%3D1%26c%3D1%26p%3DOWMpZ-uzIFOVe6JyOONs3dXuqV0qcAf-r-KCvHdXiNfM3oMXlDSgQ1lHQ7sc1bHIMXeq2XWRYP9S3VMvpbQU5suS6wIbvlY8ysKwoMucfvMNkUpDUoZB8UzfJotTLsOtFBVyJPNh84wtIvYJA4YbhskXnQTJHG_vq68uUpWVeXKz1wSjvdQ_u1PJRo5gTASsPjTgdf7BehTj5zPJxndIrav5AnCfNXFwR8xQAaSRU4qhjOcpjdWshmD6IbIfodDtwdi__LfwtUHfPb01QIsqlPSy3VHdhAIZfNEnZStQykvHk-LSdCklNojCZOUbaJwIj9iEPKTi9vRRmaU9gMfeNBmeDP3OfoyXK8-86Y2KqXTKKhrw9HL6lMHqh72xLQoSza5XNhEfc7TfOqswNBK9eA5NRxkYYvFkcrCx1tTHg23zjLO2bIuvv6KfF-1lE3v5AKFAhUB39c2XD46C9em7dM2vW8Knu6-t5MjRD-YxVNp9T01SfjR3VXzNYEBoRkEpG_5pGdZ3wn6E8MJGrfqCXLBWomAqxbiYZ3GLypPSJ_Gk0hLuc8THawjmzP3UqIAtMef6FZYVHv8lqwJ_-h8E8ePYhGq7pN73daDKoKHAz1_QeAZEQ5EG4BqcILt2bqP6KSUv-J212ANX8wE_xtc3tWR8X32YnYsBeDDiQnYCtdrY5khSMPjDtSGfaftjikxO-Gj5xRXlzKWYKqneEv31njAQ5UeE5EqWGRu9MeXfEpjWn98uQEY-eoDqmb63GVWg&f_token=1'
         },
         ele: {
           appid: 'wxece3a9a4c82f58c9',
+          shortLink: '#小程序://饿了么l外卖美食超市买菜水果/饿了么/1Q2846KGknjKtWv',
           path: 'ele-recommend-price/pages/guest/index?inviterId=19abb5a2&chInfo=ch_wechat_chsub_CopyLink&_ltracker_f='
         }
       }
@@ -162,7 +158,7 @@ export default {
     // this.maxIndex = this.list.length - 1
   },
   onLoad () {
-    this.fetchPromote()
+    // this.fetchPromote()
     this.initFontColor()
 
     this.qqmapsdk = new QQMapWX({
@@ -181,6 +177,15 @@ export default {
     this.runStop()
   },
   methods: {
+    handleToMp (plantform) {
+      wx.navigateToMiniProgram({
+        appId: this.mpPathInfo[plantform].appid,
+        shortLink: this.mpPathInfo[plantform].shortLink,
+        success: (res) => {
+          this.isAd = false
+        }
+      })
+    },
     fetchPromote () { // 推广云函数
       this.$api.cf({name: 'demo'}).then(res => {
         console.log('log-meituan: ', res)
