@@ -76,6 +76,10 @@
         </navigator>
       </view>
     </AtCurtain>
+
+    <navigator class="floating-entry" url="/pages/conditioner/conditioner">
+      <image src="../../assets/img/shadiao.png"></image>
+    </navigator>
     <!-- <AtButton
       :onClick="() => {isAd = false}">
       右上关闭幕帘
@@ -545,6 +549,18 @@ page {
     //   background: url('../../assets/img/icon-sprite.png') no-repeat / 462rpx 385rpx;
     //   background-position: 0 0;
     // }
+  }
+  .floating-entry {
+    position: fixed;
+    right: 0;
+    bottom: 15vh;
+    // bottom: 40vh;
+    width: 386*0.7rpx;
+    height: 75*0.7rpx;
+    image {
+      width: 100%;
+      height: 100%;
+    }
   }
 }
 @keyframes filp180 {

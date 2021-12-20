@@ -3,7 +3,8 @@
 export default {
   pages: [
     'pages/index/index',
-    'pages/user/user'
+    'pages/user/user',
+    'pages/conditioner/conditioner'
   ],
   window: {
     backgroundTextStyle: 'light',
